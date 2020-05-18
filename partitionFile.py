@@ -1,4 +1,5 @@
 import pandas
+import os
 
 # Reads a file and partitions it based on
 # HEADER_VLUE creating multiple files.
@@ -13,6 +14,10 @@ def readFileWithPandas():
         uniquelist = list(chunk['REPLACE_THIS_TAG_VALUE'].unique())
         for i in uniquelist:
             f = chunk.loc[chunk['REPLACE_THIS_TAG_VALUE'] == i]
-            f.to_csv(str(i)+'.csv', mode='a', index=False, sep=',')
+            f.to_csv(, mode='a', index=False, sep=',')
+            if not os.path.isfile(str(i)+'.csv'): #file doesn't exist - write header.
+                f.to_csv(str(i)+'.csv', mode='w', index=False, sep=',')
+            else: # files exists - appending so don't rewrite header.
+                f.to_csv(str(i)+'.csv', mode='a', index=False, sep=',', header=False)
 
 readFileWithPandas()
